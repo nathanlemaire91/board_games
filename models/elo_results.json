@@ -1,0 +1,30 @@
+{
+ "ab:0:../models/nnue_iter000676.pt@10\tmcts@10": [
+  2.0,
+  2
+ ],
+ "ab:0:../models/nnue_iter000676.pt@2\tmcts@2": [
+  1.0,
+  2
+ ],
+ "ab:0:../models/nnue_iter000795.pt@1\tmcts@1": [
+  15.0,
+  20
+ ],
+ "ab:0:../models/nnue_iter000795.pt@0.1\tmcts@0.1": [
+  14.0,
+  20
+ ],
+ "ab:0:../models/nnue_iter003690.pt@0.1\tmcts@0.1": [
+  17.5,
+  20
+ ],
+ "ab:0:../models/nnue_iter000795.pt@0.1\tab:0:../models/nnue_iter003690.pt@0.1": [
+  10.5,
+  20
+ ],
+ "ab:0:../models/nnue_iter000795.pt@1\tab:0:../models/nnue_iter003690.pt@1": [
+  7.5,
+  20
+ ]
+}

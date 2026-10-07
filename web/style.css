@@ -1,0 +1,162 @@
+:root {
+  --page: #f6f1e7;
+  --panel: #fffaf0;
+  --ink: #2b2118;
+  --muted: #7a6a58;
+  --line: #dccfb9;
+  --accent: #b5651d;
+  --accent-ink: #fff;
+  --error: #b3261e;
+
+  --wood: #8b5a2b;
+  --wood-edge: #6e4520;
+  --hole: #5c3a1a;
+  --seed-text: #f5e6c8;
+  --playable: #f0b040;
+  --last-move: #f5e6c8;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --page: #1c1712;
+    --panel: #26201a;
+    --ink: #efe6d8;
+    --muted: #a8988a;
+    --line: #3d342b;
+    --accent: #e0913f;
+    --accent-ink: #1c1712;
+    --error: #f2b8b5;
+  }
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+
+body {
+  margin: 0;
+  background: var(--page);
+  color: var(--ink);
+  font: 16px/1.4 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+main {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 12px 16px 24px;
+}
+
+header h1 {
+  margin: 4px 0 12px;
+  font-size: 1.6rem;
+  letter-spacing: 0.02em;
+}
+
+.hint { color: var(--muted); font-size: 0.85em; font-weight: normal; }
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+/* Setup */
+.players-setup {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.player-card {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 12px 14px 14px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.player-card legend { font-weight: 600; padding: 0 6px; }
+
+label { display: flex; flex-direction: column; gap: 4px; font-size: 0.95rem; }
+label.inline { flex-direction: row; align-items: center; gap: 8px; }
+
+input, select, button { font: inherit; color: inherit; }
+
+input[type="number"], select {
+  background: var(--page);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 6px 8px;
+}
+
+label.inline input[type="number"] { width: 5em; }
+
+.setup-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+button {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+button:hover { border-color: var(--accent); }
+button.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); font-weight: 600; }
+button:disabled { opacity: 0.5; cursor: default; }
+
+.error { color: var(--error); min-height: 1.4em; margin: 10px 0 0; }
+
+/* Game */
+#game { display: flex; flex-direction: column; gap: 8px; }
+
+#board {
+  display: block;
+  width: 100%;
+  /* Fits the window in both directions: the bars, status and buttons keep about 230px */
+  max-height: calc(100vh - 230px);
+  min-height: 160px;
+}
+
+.player-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 14px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+}
+
+.player-bar.to-move { border-color: var(--accent); background: var(--panel); }
+.player-bar .name { font-weight: 600; overflow-wrap: anywhere; }
+.player-bar .stats { color: var(--muted); font-size: 0.9rem; }
+
+#status { margin: 4px 0; min-height: 1.4em; text-align: center; font-size: 1.05rem; }
+
+.controls { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+
+/* Board drawing */
+.board-wood { fill: var(--wood); stroke: var(--wood-edge); stroke-width: 4; }
+.store { fill: var(--hole); }
+.hole circle { fill: var(--hole); stroke: var(--hole); stroke-width: 2; transition: stroke 0.15s; }
+.hole.last circle { stroke: var(--last-move); stroke-width: 4; }
+.hole.playable { cursor: pointer; }
+.hole.playable circle { stroke: var(--playable); stroke-width: 6; }
+.hole.playable:hover circle { fill: #74491f; }
+.hole:focus { outline: none; }
+.hole:focus-visible circle { stroke: var(--accent-ink); stroke-width: 6; }
+
+.seeds { fill: var(--seed-text); font: 700 34px system-ui, sans-serif; text-anchor: middle; dominant-baseline: central; pointer-events: none; }
+.index { fill: var(--seed-text); opacity: 0.7; font: 14px system-ui, sans-serif; text-anchor: middle; dominant-baseline: central; }
+.store-count { fill: var(--seed-text); font: 700 36px system-ui, sans-serif; text-anchor: middle; dominant-baseline: central; }
+.store-label { fill: var(--seed-text); opacity: 0.8; font: 600 15px system-ui, sans-serif; text-anchor: middle; }

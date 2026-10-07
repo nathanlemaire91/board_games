@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Awale</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Awale</h1>
+    </header>
+
+    <!-- Choosing the players -->
+    <section id="setup" class="panel">
+      <div class="players-setup">
+        <fieldset class="player-card" data-side="0">
+          <legend>Player 0 <span class="hint">bottom row, moves first</span></legend>
+        </fieldset>
+        <fieldset class="player-card" data-side="1">
+          <legend>Player 1 <span class="hint">top row</span></legend>
+        </fieldset>
+      </div>
+      <div class="setup-footer">
+        <label class="inline">
+          Minimum delay between AI moves
+          <input id="min-delay" type="number" min="0" step="0.1" value="0.5"> s
+        </label>
+        <button id="start" class="primary">Start game</button>
+      </div>
+      <p id="setup-error" class="error" role="alert"></p>
+    </section>
+
+    <!-- The game -->
+    <section id="game" hidden>
+      <div class="player-bar" id="bar-1"></div>
+      <svg id="board" viewBox="0 0 860 330" role="img" aria-label="Awale board"></svg>
+      <div class="player-bar" id="bar-0"></div>
+      <p id="status" aria-live="polite"></p>
+      <div class="controls">
+        <button id="new-game" title="N">New game</button>
+        <button id="pause" title="Space">Pause</button>
+        <button id="change-players">Change players</button>
+      </div>
+    </section>
+  </main>
+
+  <template id="player-fields">
+    <label>Type
+      <select name="kind">
+        <option value="human">Human</option>
+        <option value="random">Random</option>
+        <option value="mcts">MCTS</option>
+        <option value="ab">Alpha-beta + NNUE</option>
+        <option value="nnue">NNUE, one ply</option>
+      </select>
+    </label>
+    <label data-for="ab nnue">Weights
+      <select name="weights"></select>
+    </label>
+    <label data-for="ab">Depth limit <span class="hint">0 = none</span>
+      <input name="depth" type="number" min="0" max="100" value="0">
+    </label>
+    <label data-for="mcts">Iteration limit <span class="hint">empty = none</span>
+      <input name="iterations" type="number" min="1" placeholder="none">
+    </label>
+    <label data-for="mcts ab">Time to think <span class="hint">seconds per move</span>
+      <input name="move_time" type="number" min="0.01" step="0.1" value="1">
+    </label>
+    <label data-for="mcts" class="inline">
+      <input name="reuse" type="checkbox" checked> Keep the search tree between moves
+    </label>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>
