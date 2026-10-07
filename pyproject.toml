@@ -1,7 +1,7 @@
 [project]
-name = "awale"
+name = "board-games"
 version = "0.1.0"
-description = "Add your description here"
+description = "Board game engines (MCTS, alpha-beta with NNUE, self-play training) and the games that use them"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [

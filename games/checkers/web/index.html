@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Checkers</title>
+  <link rel="stylesheet" href="style.css?v=1">
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Checkers</h1>
+    </header>
+
+    <!-- Choosing the players -->
+    <section id="setup" class="panel">
+      <div class="players-setup">
+        <fieldset class="player-card" data-side="0">
+          <legend>Player 0 <span class="hint">dark pieces, moves first</span></legend>
+        </fieldset>
+        <fieldset class="player-card" data-side="1">
+          <legend>Player 1 <span class="hint">light pieces</span></legend>
+        </fieldset>
+      </div>
+      <div class="setup-footer">
+        <label class="inline">
+          Minimum delay between AI moves
+          <input id="min-delay" type="number" min="0" step="0.1" value="0.5"> s
+        </label>
+        <button id="start" class="primary">Start game</button>
+      </div>
+      <p id="setup-error" class="error" role="alert"></p>
+    </section>
+
+    <!-- The game -->
+    <section id="game" hidden>
+      <div class="player-bar" id="bar-top"></div>
+      <div class="board-wrap">
+        <svg id="board" viewBox="0 0 856 856" role="img" aria-label="Checkers board"></svg>
+        <!-- Shown over the board when the game is over -->
+        <div id="result" class="result" role="region" aria-label="Game result" hidden>
+          <div class="result-card">
+            <button id="result-close" class="result-close" title="Show the final board (Esc)" aria-label="Close">&times;</button>
+            <p id="result-title" class="result-title"></p>
+            <p id="result-score" class="result-score"></p>
+            <p id="result-detail" class="result-detail"></p>
+            <div class="result-actions">
+              <button id="result-again" class="primary">Play again</button>
+              <button id="result-players">Change players</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="player-bar" id="bar-bottom"></div>
+      <p id="status" aria-live="polite"></p>
+      <div class="controls">
+        <button id="new-game" title="N">New game</button>
+        <button id="pause" title="Space">Pause</button>
+        <button id="flip" title="F">Flip board</button>
+        <button id="change-players">Change players</button>
+      </div>
+    </section>
+  </main>
+
+  <template id="player-fields">
+    <label>Type
+      <select name="kind">
+        <option value="human">Human</option>
+        <option value="ai">AI (alpha-beta + NNUE)</option>
+      </select>
+    </label>
+    <label data-for="ai">AI level <span class="hint" data-role="difficulty-hint"></span>
+      <input name="difficulty" type="range" min="1" max="10" step="1" value="5">
+    </label>
+  </template>
+
+  <script src="app.js?v=1"></script>
+</body>
+</html>

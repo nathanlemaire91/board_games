@@ -1,0 +1,269 @@
+:root {
+  --page: #f6f1e7;
+  --panel: #fffaf0;
+  --ink: #2b2118;
+  --muted: #7a6a58;
+  --line: #dccfb9;
+  --accent: #b5651d;
+  --accent-ink: #fff;
+  --error: #b3261e;
+
+  /* The board looks the same in light and dark mode, like a real one */
+  --board-edge: #5c3a1a;
+  --light-square: #ead2ac;
+  --dark-square: #8b5a2b;
+  --coordinate: #f5e6c8;
+  --dark-piece: #2b2118;
+  --dark-piece-rim: #4a3a2c;
+  --light-piece: #f6ecdc;
+  --light-piece-rim: #d9c7aa;
+  --crown: #e0a030;
+  --playable: #f0b040;
+  --last-move: rgba(245, 214, 120, 0.35);
+
+  --win: #b8860b;          /* The winner's highlights */
+  --win-bg: #fbefc8;
+  --win-ink: #6b4a00;
+  --backdrop: rgba(43, 33, 24, 0.55);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --page: #1c1712;
+    --panel: #26201a;
+    --ink: #efe6d8;
+    --muted: #a8988a;
+    --line: #3d342b;
+    --accent: #e0913f;
+    --accent-ink: #1c1712;
+    --error: #f2b8b5;
+    --win: #f0c040;
+    --win-bg: #3a2f12;
+    --win-ink: #f6d77a;
+    --backdrop: rgba(0, 0, 0, 0.6);
+  }
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+
+body {
+  margin: 0;
+  background: var(--page);
+  color: var(--ink);
+  font: 16px/1.4 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+main {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 12px 16px 24px;
+}
+
+header h1 {
+  margin: 4px 0 12px;
+  font-size: 1.6rem;
+  letter-spacing: 0.02em;
+}
+
+.hint { color: var(--muted); font-size: 0.85em; font-weight: normal; }
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+/* Setup */
+.players-setup {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.player-card {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 12px 14px 14px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.player-card legend { font-weight: 600; padding: 0 6px; }
+
+label { display: flex; flex-direction: column; gap: 4px; font-size: 0.95rem; }
+label.inline { flex-direction: row; align-items: center; gap: 8px; }
+
+input, select, button { font: inherit; color: inherit; }
+
+input[type="number"], select {
+  background: var(--page);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 6px 8px;
+}
+
+label.inline input[type="number"] { width: 5em; }
+
+input[type="range"] { width: 100%; accent-color: currentColor; }
+
+.setup-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+button {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+button:hover { border-color: var(--accent); }
+button.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); font-weight: 600; }
+button:disabled { opacity: 0.5; cursor: default; }
+
+.error { color: var(--error); min-height: 1.4em; margin: 10px 0 0; }
+
+/* Game */
+#game { display: flex; flex-direction: column; gap: 8px; }
+
+#board {
+  display: block;
+  width: 100%;
+  /* Fits the window in both directions: the bars, status and buttons keep about 230px */
+  max-height: calc(100vh - 230px);
+  min-height: 160px;
+}
+
+.player-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 14px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+}
+
+.player-bar.to-move { border-color: var(--accent); background: var(--panel); }
+.player-bar .name { font-weight: 600; overflow-wrap: anywhere; }
+.player-bar .chip { align-self: center; width: 0.9em; height: 0.9em; border-radius: 50%; }
+.player-bar .chip.p0 { background: var(--dark-piece); border: 2px solid var(--dark-piece-rim); }
+.player-bar .chip.p1 { background: var(--light-piece); border: 2px solid var(--light-piece-rim); }
+.player-bar .stats { color: var(--muted); font-size: 0.9rem; }
+
+/* Game over: the winner stands out, the loser fades */
+.player-bar.winner { border: 2px solid var(--win); background: var(--win-bg); }
+.player-bar.loser { opacity: 0.55; }
+.badge {
+  align-self: center;
+  padding: 1px 10px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.player-bar.winner .badge { background: var(--win-ink); color: var(--win-bg); }
+.player-bar.draw .badge { border: 1px solid var(--muted); color: var(--muted); }
+
+.board-wrap { position: relative; }
+
+.result {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  background: var(--backdrop);
+  border-radius: 12px;
+  animation: fade-in 0.25s ease-out;
+}
+
+.result-card {
+  position: relative;
+  max-width: 420px;
+  width: 100%;
+  padding: 18px 22px 20px;
+  text-align: center;
+  background: var(--panel);
+  border: 3px solid var(--win);
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  animation: pop-in 0.3s ease-out;
+}
+.result.draw .result-card { border-color: var(--line); }
+
+.result-title { margin: 0; font-size: clamp(1.6rem, 6vw, 2.4rem); font-weight: 800; color: var(--win-ink); line-height: 1.1; }
+.result.draw .result-title { color: var(--ink); }
+.result.lost .result-title { color: var(--ink); }
+.result-score { margin: 6px 0 2px; font-size: clamp(1.3rem, 5vw, 1.8rem); font-weight: 700; font-variant-numeric: tabular-nums; }
+.result-detail { margin: 0 0 14px; color: var(--muted); font-size: 0.95rem; }
+.result-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+
+.result-close {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  padding: 0 9px;
+  border: none;
+  background: none;
+  font-size: 1.5rem;
+  line-height: 1.3;
+  color: var(--muted);
+}
+
+/* Phones: the board is too short to hold the card, which covers the screen instead */
+@media (max-width: 640px) {
+  .result { position: fixed; z-index: 10; border-radius: 0; padding: 16px; }
+}
+
+@keyframes fade-in { from { opacity: 0; } }
+@keyframes pop-in { from { opacity: 0; transform: scale(0.9); } }
+@media (prefers-reduced-motion: reduce) {
+  .result, .result-card { animation: none; }
+}
+
+#status { margin: 4px 0; min-height: 1.4em; text-align: center; font-size: 1.05rem; }
+
+.controls { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+
+
+/* Board drawing */
+.board-edge { fill: var(--board-edge); }
+.cell.light { fill: var(--light-square); }
+.cell.dark { fill: var(--dark-square); }
+.coordinate { fill: var(--coordinate); opacity: 0.75; font: 600 15px system-ui, sans-serif; text-anchor: middle; dominant-baseline: central; }
+.last { fill: var(--last-move); }
+
+.piece circle { stroke-width: 3; }
+.piece.p0 circle { fill: var(--dark-piece); stroke: #000; }
+.piece.p0 .rim { fill: none; stroke: var(--dark-piece-rim); }
+.piece.p1 circle { fill: var(--light-piece); stroke: #a8936f; }
+.piece.p1 .rim { fill: none; stroke: var(--light-piece-rim); }
+.crown { fill: var(--crown); stroke: #8a5a10; stroke-width: 1.5; stroke-linejoin: round; }
+
+.piece.movable { cursor: pointer; }
+.piece.movable > circle:first-child { stroke: var(--playable); stroke-width: 6; }
+.piece.selected > circle:first-child, .piece.jumping > circle:first-child { stroke: #fff; stroke-width: 7; }
+.piece:focus { outline: none; }
+.piece:focus-visible > circle:first-child { stroke: #fff; stroke-width: 7; stroke-dasharray: 8 5; }
+
+.captured { fill: none; stroke: var(--coordinate); stroke-width: 3; stroke-dasharray: 6 6; opacity: 0.8; pointer-events: none; }
+
+.target { cursor: pointer; }
+.target rect { fill: transparent; }
+.target circle { fill: var(--playable); opacity: 0.85; }
+.target:hover circle { opacity: 1; }
+.target:focus { outline: none; }
+.target:focus-visible circle { stroke: #fff; stroke-width: 4; }

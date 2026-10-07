@@ -34,7 +34,7 @@ wheels = [
 ]
 
 [[package]]
-name = "awale"
+name = "board-games"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
